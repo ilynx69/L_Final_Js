@@ -1,0 +1,172 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+}
+
+enum UserStatus {
+  ACTIVE
+  EXPELLED
+}
+
+enum MarkType {
+  PRESENCE
+  ABSENCE
+  DELAY
+}
+
+enum WorkType {
+  LAB
+  TEST
+  PRACTICE
+  EXAM
+  THEORY
+}
+
+enum SubmissionStatus {
+  PENDING
+  GRADED
+  REJECTED
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  middleName   String?
+  role         Role       @default(STUDENT)
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  groups             UserToGroup[]
+  gradesSet          Grade[]          @relation("GradesCreatedBy")
+  gradesReceived     Grade[]          @relation("GradesForStudent")
+  teamMemberships    TeamMember[]
+  labSubmissions     LabSubmission[]  @relation("StudentSubmissions")
+  gradedSubmissions  LabSubmission[]  @relation("TeacherGradedSubmissions")
+  teacherSubjects    Subject[]        @relation("TeacherSubjects")
+}
+
+model Group {
+  id        String        @id @default(uuid())
+  name      String        @unique
+  students  UserToGroup[]
+  lessons   Lesson[]
+}
+
+model UserToGroup {
+  userId    String
+  groupId   String
+  joinedAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@id([userId, groupId])
+}
+
+model Subject {
+  id             String          @id @default(uuid())
+  name           String          @unique
+  teachers       User[]          @relation("TeacherSubjects")
+  lessons        Lesson[]
+  labAssignments LabAssignment[]
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  subjectId String
+  groupId   String
+  date      DateTime @db.Date
+  startTime DateTime
+  endTime   DateTime
+
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  group     Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  grades    Grade[]
+
+  @@index([date])
+}
+
+model Grade {
+  id           String    @id @default(uuid())
+  studentId    String
+  lessonId     String
+  value        Int?
+  markType     MarkType  @default(PRESENCE)
+  type         WorkType  @default(PRACTICE)
+  comment      String?
+  createdById  String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  student      User      @relation("GradesForStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  lesson       Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  createdBy    User      @relation("GradesCreatedBy", fields: [createdById], references: [id])
+
+  @@unique([studentId, lessonId])
+  @@index([studentId])
+  @@index([lessonId])
+}
+
+model LabAssignment {
+  id             String          @id @default(uuid())
+  subjectId      String
+  title          String
+  description    String          @db.Text
+  deadline       DateTime
+  isTeam         Boolean         @default(false)
+  fileUrl        String?
+  maxGrade       Int             @default(5)
+  createdAt      DateTime        @default(now())
+
+  subject        Subject         @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  submissions    LabSubmission[]
+}
+
+model ProjectTeam {
+  id              String          @id @default(uuid())
+  labAssignmentId String
+  name            String
+  members         TeamMember[]
+  submissions     LabSubmission[]
+}
+
+model TeamMember {
+  id            String      @id @default(uuid())
+  teamId        String
+  userId        String
+  team          ProjectTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+}
+
+model LabSubmission {
+  id              String           @id @default(uuid())
+  labAssignmentId String
+  studentId       String?
+  teamId          String?
+  fileUrl         String
+  submittedAt     DateTime         @default(now())
+  status          SubmissionStatus @default(PENDING)
+  grade           Int?
+  teacherComment  String?
+  gradedById      String?
+  gradedAt        DateTime?
+
+  labAssignment   LabAssignment    @relation(fields: [labAssignmentId], references: [id], onDelete: Cascade)
+  student         User?            @relation("StudentSubmissions", fields: [studentId], references: [id], onDelete: Cascade)
+  team            ProjectTeam?     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  gradedBy        User?            @relation("TeacherGradedSubmissions", fields: [gradedById], references: [id])
+}
