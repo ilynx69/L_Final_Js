@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 263.4 70% 50.4%;
+    --primary-rgb: 139, 92, 246; /* For RGBA utility */
+    --primary-foreground: 210 20% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 263.4 70% 50.4%;
+    
+    /* Attendance Colors */
+    --presence: 142.1 76.2% 36.3%; /* Green */
+    --absence: 346.8 77.2% 49.8%;  /* Red */
+    --delay: 47.9 95.8% 53.1%;     /* Orange/Yellow */
+  }
+}
+
+body {
+  background-color: #09090b;
+  color: #fafafa;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism card utility */
+.glass {
+  background: rgba(15, 15, 20, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-interactive {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-interactive:hover {
+  background: rgba(20, 20, 30, 0.8);
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* 📓 High-Performance CSS-Only Hover highlighting for Journal Matrix */
+.journal-table {
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+.journal-table td, 
+.journal-table th {
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+/* Highlight column cells */
+.journal-table td:hover::after,
+.journal-table th:hover::after {
+  content: "";
+  position: absolute;
+  background-color: rgba(139, 92, 246, 0.1); /* Indigo highlight for column */
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Highlight row cells */
+.journal-table tr:hover td {
+  background-color: rgba(139, 92, 246, 0.05); /* Indigo highlight for row */
+}
+
+/* Highlight hovered cell precisely */
+.journal-table td:hover {
+  background-color: rgba(139, 92, 246, 0.2) !important;
+  outline: 1.5px solid rgba(139, 92, 246, 0.5);
+  z-index: 10;
+}
