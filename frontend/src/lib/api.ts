@@ -162,10 +162,35 @@ export const ApiClient = {
         const lesson = lessons.find((l) => l.id === payload.lessonId);
 
         let finalMarkType = payload.markType;
+        let finalValue = payload.value ?? null;
 
-        if (lesson && payload.markType === "PRESENCE") {
-          const lessonStart = new Date(lesson.startTime);
-          const isLate = false;
+        if (finalMarkType === "DELAY") {
+          if (finalValue !== null) {
+            if (finalValue > 20) {
+              finalMarkType = "ABSENCE";
+              finalValue = null;
+            } else if (finalValue < 1) {
+              finalValue = 1;
+            }
+          } else {
+            finalValue = 10;
+          }
+        } else if (finalMarkType === "PRESENCE") {
+          if (lesson) {
+            const now = new Date();
+            const lessonStart = new Date(lesson.startTime);
+            const diffMs = now.getTime() - lessonStart.getTime();
+            if (diffMs > 0) {
+              const diffMinutes = Math.floor(diffMs / 60000);
+              if (diffMinutes > 20) {
+                finalMarkType = "ABSENCE";
+                finalValue = null;
+              } else if (diffMinutes >= 1) {
+                finalMarkType = "DELAY";
+                finalValue = diffMinutes;
+              }
+            }
+          }
         }
 
         if (!cells[payload.studentId]) {
@@ -176,7 +201,7 @@ export const ApiClient = {
 
         const updatedCell = {
           id: gradeId,
-          value: payload.value ?? null,
+          value: finalValue,
           markType: finalMarkType,
           type: payload.type,
           comment: payload.comment || null

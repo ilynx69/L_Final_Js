@@ -49,7 +49,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 relative overflow-hidden">
+    <main className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-[#09090b] text-zinc-900 dark:text-white transition-colors px-4 relative overflow-hidden">
       {}
       <div className="absolute top-1/4 left-1/4 h-[300px] w-[300px] rounded-full bg-orange-900/10 blur-[100px]" />
       <div className="absolute bottom-1/4 right-1/4 h-[300px] w-[300px] rounded-full bg-indigo-900/10 blur-[100px]" />

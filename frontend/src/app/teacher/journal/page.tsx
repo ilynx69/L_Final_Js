@@ -41,6 +41,7 @@ export default function TeacherJournalPage() {
   });
 
   const [saving, setSaving] = useState(false);
+  const [helpModalOpen, setHelpModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadSelectors() {
@@ -269,18 +270,34 @@ export default function TeacherJournalPage() {
     setSaving(true);
     const parsedValue = modalData.value ? parseInt(modalData.value, 10) : null;
 
-    if (parsedValue !== null && (parsedValue < 1 || parsedValue > 10)) {
-      alert("Оценка должна быть от 1 до 10");
-      setSaving(false);
-      return;
+    let finalMarkType = modalData.markType;
+    let finalValue = parsedValue;
+
+    if (finalMarkType === "DELAY") {
+      if (finalValue !== null) {
+        if (finalValue > 20) {
+          finalMarkType = "ABSENCE";
+          finalValue = null;
+        } else if (finalValue < 1) {
+          finalValue = 1;
+        }
+      } else {
+        finalValue = 10;
+      }
+    } else if (finalMarkType === "PRESENCE") {
+      if (finalValue !== null && (finalValue < 1 || finalValue > 10)) {
+        alert("Оценка должна быть от 1 до 10");
+        setSaving(false);
+        return;
+      }
     }
 
     try {
       await ApiClient.journal.saveGrade({
         studentId: modalData.studentId,
         lessonId: modalData.lessonId,
-        value: parsedValue,
-        markType: modalData.markType,
+        value: finalValue,
+        markType: finalMarkType,
         type: modalData.type,
         comment: modalData.comment || undefined
       });
@@ -288,8 +305,8 @@ export default function TeacherJournalPage() {
       const currentCell = students.find(s => s.id === modalData.studentId)?.grades[modalData.lessonId];
       updateLocalCell(modalData.studentId, modalData.lessonId, {
         id: currentCell?.id || `temp-${Date.now()}`,
-        value: parsedValue,
-        markType: modalData.markType,
+        value: finalValue,
+        markType: finalMarkType,
         type: modalData.type,
         comment: modalData.comment || null
       });
@@ -375,6 +392,14 @@ export default function TeacherJournalPage() {
               ))}
             </select>
           </div>
+
+          <button
+            onClick={() => setHelpModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-2 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-300 rounded-lg text-xs font-semibold transition cursor-pointer"
+          >
+            <HelpCircle className="h-4 w-4 text-orange-400" />
+            Справка
+          </button>
 
           <button
             onClick={() => setNewLessonModalOpen(true)}
@@ -538,7 +563,16 @@ export default function TeacherJournalPage() {
                   <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Посещаемость</label>
                   <select
                     value={modalData.markType}
-                    onChange={(e) => setModalData({ ...modalData, markType: e.target.value as MarkType, value: e.target.value !== "PRESENCE" ? "" : modalData.value })}
+                    onChange={(e) => {
+                      const nextType = e.target.value as MarkType;
+                      let nextVal = "";
+                      if (nextType === "DELAY") {
+                        nextVal = "10";
+                      } else if (nextType === "PRESENCE") {
+                        nextVal = "";
+                      }
+                      setModalData({ ...modalData, markType: nextType, value: nextVal });
+                    }}
                     className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
                   >
                     <option value="PRESENCE">Был (Присутствует)</option>
@@ -549,11 +583,13 @@ export default function TeacherJournalPage() {
 
                 {}
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Оценка (1-10)</label>
+                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                    {modalData.markType === "DELAY" ? "Опоздание (1-20 мин)" : "Оценка (1-10)"}
+                  </label>
                   <input
                     type="number"
                     min="1"
-                    max="10"
+                    max={modalData.markType === "DELAY" ? 20 : 10}
                     disabled={modalData.markType === "ABSENCE"}
                     value={modalData.value}
                     onChange={(e) => setModalData({ ...modalData, value: e.target.value })}
@@ -699,6 +735,81 @@ export default function TeacherJournalPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {helpModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="glass w-full max-w-xl rounded-xl border border-zinc-800 p-6 space-y-6 animate-in fade-in zoom-in duration-200">
+            <div className="flex justify-between items-center pb-3 border-b border-zinc-900">
+              <div className="flex items-center gap-2 text-orange-400">
+                <HelpCircle className="h-5 w-5" />
+                <h3 className="text-sm font-bold text-white">Справка по управлению журналом</h3>
+              </div>
+              <button
+                onClick={() => setHelpModalOpen(false)}
+                className="p-1 text-zinc-500 hover:text-white rounded-lg transition"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 text-xs text-zinc-300 font-medium">
+              <div className="space-y-1">
+                <h4 className="font-bold text-zinc-100 flex items-center gap-1.5">
+                  🖱️ Жесты мышью
+                </h4>
+                <ul className="list-disc pl-5 space-y-1 text-zinc-400">
+                  <li><b className="text-zinc-200">Двойной клик на ячейку:</b> Открывает модальное окно для ручного ввода оценки (1-10), типа работы и добавления текстового комментария.</li>
+                  <li><b className="text-zinc-200">Правый клик мыши:</b> Мгновенно отмечает отсутствие студента (ставит красную букву <span className="text-red-400 font-bold">Н</span>).</li>
+                  <li><b className="text-zinc-200">Клик колесиком (средней кнопкой):</b> Мгновенно отмечает опоздание студента (ставит оранжевую букву <span className="text-yellow-500 font-bold">О</span>, по умолчанию 10 минут).</li>
+                </ul>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="font-bold text-zinc-100 flex items-center gap-1.5">
+                  ⌨️ Быстрый ввод с клавиатуры
+                </h4>
+                <p className="text-zinc-400">При фокусе на ячейку:</p>
+                <ul className="list-disc pl-5 space-y-1 text-zinc-400">
+                  <li>Клавиши <kbd className="bg-zinc-800 text-white px-1 py-0.5 rounded text-[10px]">1</kbd> - <kbd className="bg-zinc-800 text-white px-1 py-0.5 rounded text-[10px]">9</kbd> выставляют оценку от 1 до 9.</li>
+                  <li>Клавиша <kbd className="bg-zinc-800 text-white px-1 py-0.5 rounded text-[10px]">0</kbd> выставляет оценку 10.</li>
+                  <li>Клавиши <kbd className="bg-zinc-800 text-white px-1 py-0.5 rounded text-[10px]">Backspace</kbd> или <kbd className="bg-zinc-800 text-white px-1 py-0.5 rounded text-[10px]">Delete</kbd> полностью очищают ячейку.</li>
+                  <li>Клавиши-стрелочки <kbd className="bg-zinc-800 text-white px-1 py-0.5 rounded text-[10px]">Arrow</kbd> позволяют передвигаться между ячейками журнала (как в Excel).</li>
+                </ul>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="font-bold text-zinc-100 flex items-center gap-1.5">
+                  ⏳ Логика опозданий (1-20 минут)
+                </h4>
+                <ul className="list-disc pl-5 space-y-1 text-zinc-400">
+                  <li>Опоздания фиксируются в диапазоне от 1 до 20 минут (в журнале отображаются как <span className="text-yellow-500 font-bold">О/минуты</span>, например, <span className="text-yellow-500 font-bold">О/15</span>).</li>
+                  <li>Если студент опаздывает более чем на 20 минут, система автоматически переводит его в статус отсутствия (<span className="text-red-400 font-bold">Н</span>).</li>
+                  <li>При автоматической проверке на бэкенде, если оценка ставится спустя более 20 минут с момента старта занятия, она также автоматически превращается в пропуск.</li>
+                </ul>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="font-bold text-zinc-100 flex items-center gap-1.5">
+                  👤 Состояния строк студентов
+                </h4>
+                <ul className="list-disc pl-5 space-y-1 text-zinc-400">
+                  <li><span className="text-zinc-500 font-bold">Серая строка (полупрозрачная):</span> Отчисленные студенты (блокирует ввод оценок).</li>
+                  <li><span className="text-emerald-500 font-bold">Зелёный индикатор:</span> Студент добавлен недавно (менее 3 дней назад).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="pt-3 border-t border-zinc-900">
+              <button
+                onClick={() => setHelpModalOpen(false)}
+                className="w-full py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-lg shadow-orange-600/20"
+              >
+                Понятно
+              </button>
+            </div>
           </div>
         </div>
       )}
