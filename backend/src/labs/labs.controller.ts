@@ -22,8 +22,9 @@ export class LabsController {
   @ApiOperation({ summary: 'Get details of a lab assignment' })
   @ApiResponse({ status: 200, description: 'Lab assignment details' })
   @ApiResponse({ status: 404, description: 'Assignment not found' })
-  async getAssignment(@Param('id') id: string) {
-    return this.labsService.getAssignment(id);
+  async getAssignment(@Param('id') id: string, @Req() req: express.Request) {
+    const user: any = req.user;
+    return this.labsService.getAssignment(id, user.id);
   }
 
   @Post('submit')

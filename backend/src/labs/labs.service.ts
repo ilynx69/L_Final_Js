@@ -6,7 +6,7 @@ import { SubmissionStatus } from '@prisma/client';
 export class LabsService {
   constructor(private prisma: PrismaService) {}
 
-  async getAssignment(id: string) {
+  async getAssignment(id: string, userId?: string) {
     const assignment = await this.prisma.labAssignment.findUnique({
       where: { id },
       include: {
@@ -16,7 +16,42 @@ export class LabsService {
     if (!assignment) {
       throw new NotFoundException('Лабораторная работа не найдена');
     }
-    return assignment;
+
+    let submission: any = null;
+    if (userId) {
+      if (assignment.isTeam) {
+        // Find team for this user and this assignment
+        const teamMember = await this.prisma.teamMember.findFirst({
+          where: {
+            userId: userId,
+            team: {
+              labAssignmentId: id,
+            },
+          },
+        });
+
+        if (teamMember) {
+          submission = await this.prisma.labSubmission.findFirst({
+            where: {
+              labAssignmentId: id,
+              teamId: teamMember.teamId,
+            },
+          });
+        }
+      } else {
+        submission = await this.prisma.labSubmission.findFirst({
+          where: {
+            labAssignmentId: id,
+            studentId: userId,
+          },
+        });
+      }
+    }
+
+    return {
+      ...assignment,
+      submission,
+    };
   }
 
   async submitLab(
