@@ -1,6 +1,5 @@
 import { User, ScheduleEntry, LabAssignment, LabSubmission, ProjectTeam, JournalLesson, MarkType, WorkType } from "./types";
 
-// Seed Users
 const DEFAULT_USERS: User[] = [
   {
     id: "teacher-1",
@@ -45,7 +44,7 @@ const DEFAULT_USERS: User[] = [
     firstName: "Алексей",
     lastName: "Орлов",
     middleName: "Павлович",
-    status: "EXPELLED" // Отчислен (для тестирования серого цвета)
+    status: "EXPELLED"
   },
   {
     id: "student-5",
@@ -54,11 +53,10 @@ const DEFAULT_USERS: User[] = [
     firstName: "Екатерина",
     lastName: "Соколова",
     middleName: "Дмитриевна",
-    status: "ACTIVE" // Будет помечена как новый студент (создана недавно)
+    status: "ACTIVE"
   }
 ];
 
-// Seed Schedule
 const DEFAULT_SCHEDULE: ScheduleEntry[] = [
   {
     id: "sched-1",
@@ -89,7 +87,6 @@ const DEFAULT_SCHEDULE: ScheduleEntry[] = [
   }
 ];
 
-// Seed Lab Assignments
 const DEFAULT_LABS: LabAssignment[] = [
   {
     id: "lab-1",
@@ -129,7 +126,6 @@ const DEFAULT_LABS: LabAssignment[] = [
   }
 ];
 
-// Seed Teams
 const DEFAULT_TEAMS: ProjectTeam[] = [
   {
     id: "team-1",
@@ -142,7 +138,6 @@ const DEFAULT_TEAMS: ProjectTeam[] = [
   }
 ];
 
-// Seed Lab Submissions
 const DEFAULT_SUBMISSIONS: LabSubmission[] = [
   {
     id: "sub-1",
@@ -172,14 +167,12 @@ const DEFAULT_SUBMISSIONS: LabSubmission[] = [
   }
 ];
 
-// Seed Journal Lessons
 const DEFAULT_LESSONS: JournalLesson[] = [
   { id: "lesson-1", date: "2026-06-10", startTime: "2026-06-10T08:30:00.000Z", endTime: "2026-06-10T10:00:00.000Z" },
   { id: "lesson-2", date: "2026-06-17", startTime: "2026-06-17T08:30:00.000Z", endTime: "2026-06-17T10:00:00.000Z" },
   { id: "lesson-3", date: "2026-06-24", startTime: "2026-06-24T08:30:00.000Z", endTime: "2026-06-24T10:00:00.000Z" }
 ];
 
-// Seed cells
 const DEFAULT_CELLS: { [studentId: string]: { [lessonId: string]: any } } = {
   "student-1": {
     "lesson-1": { id: "g-1", value: 10, markType: "PRESENCE", type: "PRACTICE", comment: "Отлично работал" },
@@ -197,20 +190,19 @@ const DEFAULT_CELLS: { [studentId: string]: { [lessonId: string]: any } } = {
     "lesson-3": { id: "g-8", value: 8, markType: "PRESENCE", type: "THEORY", comment: null }
   },
   "student-4": {
-    // Expelled student
+
     "lesson-1": { id: "g-9", value: 6, markType: "PRESENCE", type: "PRACTICE", comment: null },
     "lesson-2": null,
     "lesson-3": null
   },
   "student-5": {
-    // New student
+
     "lesson-1": null,
     "lesson-2": null,
     "lesson-3": { id: "g-10", value: null, markType: "PRESENCE", type: "THEORY", comment: null }
   }
 };
 
-// LocalStorage helper
 const isServer = typeof window === "undefined";
 
 function getLocal<T>(key: string, fallback: T): T {

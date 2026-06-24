@@ -19,7 +19,7 @@ export const ApiClient = {
         const users = MockDatabase.getUsers();
         const user = users.find((u) => u.email === email);
         if (!user) throw new Error("Пользователь не найден");
-        
+
         if (typeof window !== "undefined") {
           localStorage.setItem("mock_session", JSON.stringify(user));
         }
@@ -72,6 +72,22 @@ export const ApiClient = {
   },
 
   journal: {
+    getGroups: async (): Promise<{ id: string; name: string }[]> => {
+      if (USE_MOCK) {
+        return [{ id: "group-1", name: "ИП-41" }, { id: "group-2", name: "ИП-42" }];
+      }
+      const res = await api.get("/journal/groups");
+      return res.data;
+    },
+
+    getSubjects: async (): Promise<{ id: string; name: string }[]> => {
+      if (USE_MOCK) {
+        return [{ id: "subj-web", name: "Веб-технологии" }, { id: "subj-arch", name: "Архитектура систем" }];
+      }
+      const res = await api.get("/journal/subjects");
+      return res.data;
+    },
+
     getMatrix: async (groupId: string, subjectId: string): Promise<JournalMatrixResponse> => {
       if (USE_MOCK) {
         await delay(500);
@@ -252,7 +268,7 @@ export const ApiClient = {
         await delay(400);
         const subs = MockDatabase.getSubmissions();
         const users = MockDatabase.getUsers();
-        
+
         return subs
           .filter((s) => s.labAssignmentId === labAssignmentId)
           .map((s) => {

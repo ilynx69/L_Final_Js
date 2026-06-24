@@ -18,8 +18,8 @@ export interface ScheduleEntry {
   id: string;
   subjectName: string;
   groupName: string;
-  startTime: string; // ISO DateTime string
-  endTime: string;   // ISO DateTime string
+  startTime: string;
+  endTime: string;
   teacherName: string;
   room?: string;
 }
@@ -30,9 +30,9 @@ export interface LabAssignment {
   subjectName: string;
   title: string;
   description: string;
-  deadline: string; // ISO string
+  deadline: string;
   isTeam: boolean;
-  fileUrl?: string; // Link to task specification
+  fileUrl?: string;
   maxGrade: number;
   createdAt: string;
 }
@@ -69,7 +69,7 @@ export interface ProjectTeam {
 
 export interface JournalLesson {
   id: string;
-  date: string; // YYYY-MM-DD
+  date: string;
   startTime: string;
   endTime: string;
 }
