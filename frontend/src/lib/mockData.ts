@@ -179,7 +179,7 @@ const DEFAULT_LESSONS: JournalLesson[] = [
   { id: "lesson-3", date: "2026-06-24", startTime: "2026-06-24T08:30:00.000Z", endTime: "2026-06-24T10:00:00.000Z" }
 ];
 
-// Seed Grades (Matrix Cells)
+// Seed cells
 const DEFAULT_CELLS: { [studentId: string]: { [lessonId: string]: any } } = {
   "student-1": {
     "lesson-1": { id: "g-1", value: 5, markType: "PRESENCE", type: "PRACTICE", comment: "Отлично работал" },
@@ -197,20 +197,20 @@ const DEFAULT_CELLS: { [studentId: string]: { [lessonId: string]: any } } = {
     "lesson-3": { id: "g-8", value: 4, markType: "PRESENCE", type: "THEORY", comment: null }
   },
   "student-4": {
-    // Отчисленный студент - оценки заблокированы
+    // Expelled student
     "lesson-1": { id: "g-9", value: 3, markType: "PRESENCE", type: "PRACTICE", comment: null },
     "lesson-2": null,
     "lesson-3": null
   },
   "student-5": {
-    // Новый студент - создан позже
+    // New student
     "lesson-1": null,
     "lesson-2": null,
     "lesson-3": { id: "g-10", value: null, markType: "PRESENCE", type: "THEORY", comment: null }
   }
 };
 
-// LocalStorage Helper for SSR/Next.js safety
+// LocalStorage helper
 const isServer = typeof window === "undefined";
 
 function getLocal<T>(key: string, fallback: T): T {
