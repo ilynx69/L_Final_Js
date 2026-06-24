@@ -33,7 +33,7 @@ export default function StudentDashboard() {
 
       {loading ? (
         <div className="flex h-64 items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
         </div>
       ) : schedule.length === 0 ? (
         <div className="glass p-12 rounded-xl text-center">
@@ -48,13 +48,13 @@ export default function StudentDashboard() {
 
             return (
               <div key={entry.id} className="glass glass-interactive p-6 rounded-xl relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-purple-600 group-hover:bg-purple-500 transition" />
+                <div className="absolute top-0 left-0 w-1 h-full bg-orange-600 group-hover:bg-orange-500 transition" />
                 <div className="flex flex-col gap-4">
                   <div>
-                    <span className="text-[10px] font-semibold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20 uppercase tracking-wider">
+                    <span className="text-[10px] font-semibold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20 uppercase tracking-wider">
                       {entry.groupName}
                     </span>
-                    <h3 className="text-base font-bold text-white mt-2 group-hover:text-purple-400 transition truncate">
+                    <h3 className="text-base font-bold text-white mt-2 group-hover:text-orange-400 transition truncate">
                       {entry.subjectName}
                     </h3>
                   </div>

@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
-    // Return only active users
+
     if (user.status === 'EXPELLED') {
       throw new UnauthorizedException('User has been expelled');
     }

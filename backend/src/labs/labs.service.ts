@@ -20,7 +20,7 @@ export class LabsService {
     let submission: any = null;
     if (userId) {
       if (assignment.isTeam) {
-        // Find team for this user and this assignment
+
         const teamMember = await this.prisma.teamMember.findFirst({
           where: {
             userId: userId,
@@ -62,7 +62,7 @@ export class LabsService {
       fileUrl: string;
     },
   ) {
-    // 1. Verify assignment exists
+
     const assignment = await this.prisma.labAssignment.findUnique({
       where: { id: data.labAssignmentId },
     });
@@ -70,7 +70,6 @@ export class LabsService {
       throw new NotFoundException('Лабораторная работа не найдена');
     }
 
-    // 2. If it's a team assignment, verify team membership
     if (assignment.isTeam) {
       if (!data.teamId) {
         throw new BadRequestException('Для командной работы необходимо указать teamId');
@@ -89,7 +88,6 @@ export class LabsService {
       }
     }
 
-    // 3. Create submission
     return this.prisma.labSubmission.create({
       data: {
         labAssignmentId: data.labAssignmentId,
@@ -153,7 +151,6 @@ export class LabsService {
       throw new NotFoundException('Решение не найдено');
     }
 
-    // Validate grade limits
     const maxGrade = submission.labAssignment.maxGrade;
     if (grade < 1 || grade > maxGrade) {
       throw new BadRequestException(`Оценка должна быть в диапазоне от 1 до ${maxGrade}`);
@@ -190,7 +187,6 @@ export class LabsService {
       throw new BadRequestException('Данная работа не является командной');
     }
 
-    // Create team and add the creator as the first member
     return this.prisma.projectTeam.create({
       data: {
         labAssignmentId: data.labAssignmentId,
@@ -229,7 +225,6 @@ export class LabsService {
       throw new NotFoundException('Команда не найдена');
     }
 
-    // Verify requesting student is member of the team
     const membership = await this.prisma.teamMember.findUnique({
       where: {
         teamId_userId: {
@@ -242,7 +237,6 @@ export class LabsService {
       throw new ForbiddenException('Вы не состоите в этой команде и не можете добавлять участников');
     }
 
-    // Verify user to add exists
     const userToAdd = await this.prisma.user.findUnique({
       where: { id: userId },
     });

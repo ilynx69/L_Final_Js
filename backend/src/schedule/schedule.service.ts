@@ -15,7 +15,6 @@ export class ScheduleService {
       throw new BadRequestException('Неверный формат даты YYYY-MM-DD');
     }
 
-    // Query lessons for the specified date
     const lessons = await this.prisma.lesson.findMany({
       where: {
         date: queryDate,
@@ -33,9 +32,8 @@ export class ScheduleService {
       },
     });
 
-    // Map to required API response format
     return lessons.map((lesson) => {
-      // Find teachers names
+
       const teachersList = lesson.subject.teachers.map(
         (teacher) => `${teacher.lastName} ${teacher.firstName.charAt(0)}.${teacher.middleName ? teacher.middleName.charAt(0) + '.' : ''}`
       );

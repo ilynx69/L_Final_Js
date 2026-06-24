@@ -42,21 +42,21 @@ export default function Header() {
       </div>
 
       <div className="flex items-center gap-3">
-        {/* Toggle Theme Button */}
-        <button 
+        {}
+        <button
           onClick={toggleTheme}
           className="h-8 w-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-900 flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition cursor-pointer"
         >
           {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </button>
 
-        {/* Notifications button */}
+        {}
         <button className="h-8 w-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-900 flex items-center justify-center text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition cursor-pointer relative">
           <Bell className="h-4 w-4" />
-          <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-purple-500 ring-2 ring-white dark:ring-[#09090b]" />
+          <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-orange-500 ring-2 ring-white dark:ring-[#09090b]" />
         </button>
 
-        {/* User preview badge */}
+        {}
         <div className="flex items-center gap-2 px-3 py-1 bg-zinc-100 dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-900 rounded-lg">
           <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="text-[10px] font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">

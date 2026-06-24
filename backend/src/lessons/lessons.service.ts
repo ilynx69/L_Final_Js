@@ -35,7 +35,7 @@ export class LessonsService {
       comment?: string;
     },
   ) {
-    // 1. Validate student and status
+
     const student = await this.prisma.user.findUnique({
       where: { id: data.studentId },
     });
@@ -46,7 +46,6 @@ export class LessonsService {
       throw new BadRequestException('Невозможно выставить оценку отчисленному студенту');
     }
 
-    // 2. Fetch lesson to check timing
     const lesson = await this.prisma.lesson.findUnique({
       where: { id: data.lessonId },
     });
@@ -54,7 +53,6 @@ export class LessonsService {
       throw new BadRequestException('Урок не найден');
     }
 
-    // 3. Automatic delay detection (if server time is 15+ minutes past lesson start and markType is PRESENCE)
     let finalMarkType = data.markType;
     if (finalMarkType === MarkType.PRESENCE) {
       const now = new Date();
@@ -65,7 +63,6 @@ export class LessonsService {
       }
     }
 
-    // 4. Create or update grade
     return this.prisma.grade.upsert({
       where: {
         studentId_lessonId: {

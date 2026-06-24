@@ -18,9 +18,8 @@ export default function StudentSubjectDetailsPage() {
       try {
         const assignmentsData = await ApiClient.labs.getAssignments(subjectId as string);
         setLabs(assignmentsData);
-        
-        // Load existing student submissions (simulated for student-1)
-        const allSubs = await ApiClient.labs.getSubmissions(""); // dummy call to get simulated subs
+
+        const allSubs = await ApiClient.labs.getSubmissions("");
         const studentSubs = allSubs.filter(sub => sub.studentId === "student-1" || sub.teamId === "team-1");
         setSubmissions(studentSubs);
       } catch (err) {
@@ -42,9 +41,9 @@ export default function StudentSubjectDetailsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Back button */}
-      <Link 
-        href="/student/subjects" 
+      {}
+      <Link
+        href="/student/subjects"
         className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-white transition"
       >
         <ArrowLeft className="h-4 w-4" /> Назад к предметам
@@ -79,20 +78,20 @@ export default function StudentSubjectDetailsPage() {
               return (
                 <div key={lab.id} className="glass p-5 rounded-xl border border-zinc-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex items-start gap-4">
-                    <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-purple-400 shrink-0">
+                    <div className="h-10 w-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-orange-400 shrink-0">
                       <FileText className="h-5 w-5" />
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-sm font-bold text-white leading-tight">{lab.title}</h3>
                       <p className="text-xs text-zinc-500 line-clamp-1 max-w-xl">{lab.description}</p>
-                      
+
                       <div className="flex items-center gap-3 text-[10px] font-medium text-zinc-500 pt-1">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
                           <span>Дедлайн: {formattedDeadline}</span>
                         </div>
                         {lab.isTeam && (
-                          <span className="text-purple-400 bg-purple-500/10 px-1.5 py-0.5 rounded border border-purple-500/20 text-[9px] uppercase font-bold">
+                          <span className="text-orange-400 bg-orange-500/10 px-1.5 py-0.5 rounded border border-orange-500/20 text-[9px] uppercase font-bold">
                             Командная работа
                           </span>
                         )}
@@ -101,15 +100,15 @@ export default function StudentSubjectDetailsPage() {
                   </div>
 
                   <div className="flex items-center justify-between md:justify-end gap-4 border-t border-zinc-900 md:border-0 pt-3 md:pt-0">
-                    {/* Status badge */}
+                    {}
                     <div className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-semibold ${status.color}`}>
                       <StatusIcon className="h-3.5 w-3.5" />
                       {status.text}
                     </div>
 
-                    <Link 
-                      href={`/student/lab/${lab.id}`} 
-                      className="flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+                    <Link
+                      href={`/student/lab/${lab.id}`}
+                      className="flex items-center gap-1 px-3 py-1.5 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
                     >
                       Решение <ChevronRight className="h-4 w-4" />
                     </Link>
