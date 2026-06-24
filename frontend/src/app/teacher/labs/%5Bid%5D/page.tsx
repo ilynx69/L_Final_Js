@@ -253,9 +253,19 @@ export default function TeacherLabDetailsPage() {
                     onChange={(e) => setGradeInput(parseInt(e.target.value))}
                     className="w-full px-3 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-sm text-white focus:outline-none focus:border-purple-500"
                   >
-                    {[1, 2, 3, 4, 5].map((g) => (
-                      <option key={g} value={g}>{g} {g === 5 ? "— Отлично" : g === 4 ? "— Хорошо" : g === 3 ? "— Удовлетворительно" : ""}</option>
-                    ))}
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((g) => {
+                      let label = "";
+                      if (g === 10 || g === 9) label = "— Отлично";
+                      else if (g === 8) label = "— Очень хорошо";
+                      else if (g === 7) label = "— Хорошо";
+                      else if (g === 6) label = "— Почти хорошо";
+                      else if (g === 5) label = "— Удовлетворительно";
+                      else if (g === 4) label = "— Достаточно";
+                      else label = "— Неудовлетворительно";
+                      return (
+                        <option key={g} value={g}>{g} {label}</option>
+                      );
+                    })}
                   </select>
                 </div>
 

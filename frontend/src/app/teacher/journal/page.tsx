@@ -55,7 +55,7 @@ export default function TeacherJournalShell() {
           <li><b className="text-zinc-200">Двойной клик на ячейку:</b> Открывает подробную форму выставления оценки и комментария.</li>
           <li><b className="text-zinc-200">Правый клик мыши:</b> Отмечает отсутствие студента (проставляет красную <span className="text-red-400 font-bold">Н</span>).</li>
           <li><b className="text-zinc-200">Клик колесиком мыши:</b> Отмечает опоздание студента (проставляет оранжевую <span className="text-yellow-500 font-bold">О</span>).</li>
-          <li><b className="text-zinc-200">Клавиатура (1-5):</b> Быстро выставляет соответствующую оценку в выбранную ячейку. <kbd className="bg-zinc-800 text-white px-1.5 py-0.5 rounded text-[10px]">Backspace</kbd> очищает ячейку.</li>
+          <li><b className="text-zinc-200">Клавиатура (1-10):</b> Быстро выставляет соответствующую оценку в выбранную ячейку. <kbd className="bg-zinc-800 text-white px-1.5 py-0.5 rounded text-[10px]">Backspace</kbd> очищает ячейку.</li>
         </ul>
       </div>
 

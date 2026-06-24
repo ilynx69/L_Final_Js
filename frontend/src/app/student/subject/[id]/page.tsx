@@ -37,7 +37,7 @@ export default function StudentSubjectDetailsPage() {
     if (!sub) return { text: "Не сдано", color: "text-zinc-500 bg-zinc-900 border-zinc-800", icon: Clock };
     if (sub.status === "PENDING") return { text: "На проверке", color: "text-yellow-400 bg-yellow-500/10 border-yellow-500/20", icon: Clock };
     if (sub.status === "REJECTED") return { text: "Отклонено", color: "text-red-400 bg-red-500/10 border-red-500/20", icon: AlertTriangle };
-    return { text: `Оценка: ${sub.grade}/5`, color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", icon: CheckCircle2 };
+    return { text: `Оценка: ${sub.grade}/10`, color: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20", icon: CheckCircle2 };
   };
 
   return (

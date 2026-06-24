@@ -97,10 +97,10 @@ const DEFAULT_LABS: LabAssignment[] = [
     subjectName: "Веб-технологии",
     title: "Лабораторная работа №1: Разработка адаптивного макета",
     description: "Разработать адаптивный макет с использованием HTML5, CSS3 и Flexbox/Grid. Обеспечить корректное отображение на мобильных устройствах.",
-    deadline: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 дня назад
+    deadline: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
     isTeam: false,
     fileUrl: "/docs/lab1_tz.pdf",
-    maxGrade: 5,
+    maxGrade: 10,
     createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
@@ -109,10 +109,10 @@ const DEFAULT_LABS: LabAssignment[] = [
     subjectName: "Веб-технологии",
     title: "Лабораторная работа №2: Интеграция API и JWT авторизация",
     description: "Разработать авторизацию на JWT-токенах в HttpOnly Cookies. Подключить CRUD эндпоинты для работы с журналом. Работа выполняется в парах.",
-    deadline: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(), // Через 4 дня
+    deadline: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(),
     isTeam: true,
     fileUrl: "/docs/lab2_tz.pdf",
-    maxGrade: 5,
+    maxGrade: 10,
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
   },
   {
@@ -121,10 +121,10 @@ const DEFAULT_LABS: LabAssignment[] = [
     subjectName: "Веб-технологии",
     title: "Лабораторная работа №3: Контейнеризация и Docker",
     description: "Создать Dockerfile и docker-compose.yml для веб-приложения. Развернуть бэкенд, базу данных PostgreSQL и Redis в контейнерах.",
-    deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // Через 14 дней
+    deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
     isTeam: false,
     fileUrl: "/docs/lab3_tz.pdf",
-    maxGrade: 5,
+    maxGrade: 10,
     createdAt: new Date(Date.now()).toISOString()
   }
 ];
@@ -152,7 +152,7 @@ const DEFAULT_SUBMISSIONS: LabSubmission[] = [
     fileUrl: "https://minio.mock-s3.local/labs/lab1_petrov_final.zip",
     submittedAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
     status: "GRADED",
-    grade: 5,
+    grade: 10,
     teacherComment: "Отличная верстка, адаптив выполнен без багов. Молодец!",
     gradedById: "teacher-1",
     gradedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
@@ -182,23 +182,23 @@ const DEFAULT_LESSONS: JournalLesson[] = [
 // Seed cells
 const DEFAULT_CELLS: { [studentId: string]: { [lessonId: string]: any } } = {
   "student-1": {
-    "lesson-1": { id: "g-1", value: 5, markType: "PRESENCE", type: "PRACTICE", comment: "Отлично работал" },
-    "lesson-2": { id: "g-2", value: 4, markType: "PRESENCE", type: "TEST", comment: "Контрольный тест" },
+    "lesson-1": { id: "g-1", value: 10, markType: "PRESENCE", type: "PRACTICE", comment: "Отлично работал" },
+    "lesson-2": { id: "g-2", value: 8, markType: "PRESENCE", type: "TEST", comment: "Контрольный тест" },
     "lesson-3": { id: "g-3", value: null, markType: "DELAY", type: "THEORY", comment: "Опоздал на 20 минут" }
   },
   "student-2": {
-    "lesson-1": { id: "g-4", value: 4, markType: "PRESENCE", type: "PRACTICE", comment: null },
+    "lesson-1": { id: "g-4", value: 8, markType: "PRESENCE", type: "PRACTICE", comment: null },
     "lesson-2": { id: "g-5", value: null, markType: "ABSENCE", type: "TEST", comment: "Уважительная причина" },
     "lesson-3": null
   },
   "student-3": {
-    "lesson-1": { id: "g-6", value: 5, markType: "PRESENCE", type: "PRACTICE", comment: null },
-    "lesson-2": { id: "g-7", value: 5, markType: "PRESENCE", type: "TEST", comment: "Идеально сдал тест" },
-    "lesson-3": { id: "g-8", value: 4, markType: "PRESENCE", type: "THEORY", comment: null }
+    "lesson-1": { id: "g-6", value: 9, markType: "PRESENCE", type: "PRACTICE", comment: null },
+    "lesson-2": { id: "g-7", value: 10, markType: "PRESENCE", type: "TEST", comment: "Идеально сдал тест" },
+    "lesson-3": { id: "g-8", value: 8, markType: "PRESENCE", type: "THEORY", comment: null }
   },
   "student-4": {
     // Expelled student
-    "lesson-1": { id: "g-9", value: 3, markType: "PRESENCE", type: "PRACTICE", comment: null },
+    "lesson-1": { id: "g-9", value: 6, markType: "PRESENCE", type: "PRACTICE", comment: null },
     "lesson-2": null,
     "lesson-3": null
   },
