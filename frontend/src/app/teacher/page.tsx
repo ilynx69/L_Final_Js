@@ -32,11 +32,11 @@ export default function TeacherDashboard() {
           <h1 className="text-xl font-bold text-white tracking-tight">Расписание занятий</h1>
           <p className="text-xs text-zinc-400">Ваше расписание лекций и лабораторных работ</p>
         </div>
-        
-        {/* Quick action: Add lesson */}
-        <Link 
-          href="/teacher/journal" 
-          className="flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-lg shadow-purple-600/20"
+
+        {}
+        <Link
+          href="/teacher/journal"
+          className="flex items-center gap-1.5 px-4 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer shadow-lg shadow-orange-600/20"
         >
           <Plus className="h-4 w-4" />
           Добавить занятие
@@ -45,7 +45,7 @@ export default function TeacherDashboard() {
 
       {loading ? (
         <div className="flex h-64 items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
         </div>
       ) : schedule.length === 0 ? (
         <div className="glass p-12 rounded-xl text-center">
@@ -60,13 +60,13 @@ export default function TeacherDashboard() {
 
             return (
               <div key={entry.id} className="glass glass-interactive p-6 rounded-xl relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-purple-600 group-hover:bg-purple-500 transition" />
+                <div className="absolute top-0 left-0 w-1 h-full bg-orange-600 group-hover:bg-orange-500 transition" />
                 <div className="flex flex-col gap-4">
                   <div>
-                    <span className="text-[10px] font-semibold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20 uppercase tracking-wider">
+                    <span className="text-[10px] font-semibold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20 uppercase tracking-wider">
                       {entry.groupName}
                     </span>
-                    <h3 className="text-base font-bold text-white mt-2 group-hover:text-purple-400 transition truncate">
+                    <h3 className="text-base font-bold text-white mt-2 group-hover:text-orange-400 transition truncate">
                       {entry.subjectName}
                     </h3>
                   </div>
@@ -86,9 +86,9 @@ export default function TeacherDashboard() {
                     </div>
                   </div>
 
-                  <Link 
-                    href="/teacher/journal" 
-                    className="flex items-center gap-1.5 text-[10px] font-semibold text-purple-400 hover:text-purple-300 mt-2 transition"
+                  <Link
+                    href="/teacher/journal"
+                    className="flex items-center gap-1.5 text-[10px] font-semibold text-orange-400 hover:text-orange-300 mt-2 transition"
                   >
                     Перейти к журналу <ArrowRight className="h-3 w-3" />
                   </Link>

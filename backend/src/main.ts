@@ -7,19 +7,15 @@ import cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Set global API prefix
   app.setGlobalPrefix('api');
 
-  // Enable CORS
   app.enableCors({
-    origin: true, // In production, replace with specific domain(s)
+    origin: true,
     credentials: true,
   });
 
-  // Enable Cookie Parser for reading HttpOnly JWT cookies
   app.use(cookieParser());
 
-  // Global Validation Pipe
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -28,7 +24,6 @@ async function bootstrap() {
     }),
   );
 
-  // Setup Swagger API Documentation
   const config = new DocumentBuilder()
     .setTitle('Электронный Журнал API')
     .setDescription('Документация API для проекта "Электронный Журнал"')
@@ -45,4 +40,3 @@ async function bootstrap() {
   await app.listen(port);
 }
 bootstrap();
-

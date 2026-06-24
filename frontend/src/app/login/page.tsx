@@ -7,7 +7,6 @@ import * as zod from "zod";
 import { useAuth } from "@/context/AuthContext";
 import { Loader2, KeyRound, Mail, GraduationCap } from "lucide-react";
 
-// Form Schema
 const loginSchema = zod.object({
   email: zod.string().email("Введите корректный адрес электронной почты"),
   password: zod.string().min(6, "Пароль должен состоять минимум из 6 символов")
@@ -50,14 +49,14 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 relative overflow-hidden">
-      {/* Decorative gradient glowing spheres */}
-      <div className="absolute top-1/4 left-1/4 h-[300px] w-[300px] rounded-full bg-purple-900/10 blur-[100px]" />
+    <main className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-[#09090b] text-zinc-900 dark:text-white transition-colors px-4 relative overflow-hidden">
+      {}
+      <div className="absolute top-1/4 left-1/4 h-[300px] w-[300px] rounded-full bg-orange-900/10 blur-[100px]" />
       <div className="absolute bottom-1/4 right-1/4 h-[300px] w-[300px] rounded-full bg-indigo-900/10 blur-[100px]" />
 
       <div className="w-full max-w-md glass p-8 rounded-2xl relative z-10 border border-zinc-800">
         <div className="flex flex-col items-center gap-2 mb-8">
-          <div className="h-12 w-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-500 mb-2">
+          <div className="h-12 w-12 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-500 mb-2">
             <GraduationCap className="h-7 w-7" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Вход в систему</h1>
@@ -83,7 +82,7 @@ export default function LoginPage() {
                 type="email"
                 {...register("email")}
                 placeholder="student@test.com"
-                className="w-full pl-10 pr-4 py-2.5 bg-zinc-900/50 border border-zinc-800 rounded-lg text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition"
+                className="w-full pl-10 pr-4 py-2.5 bg-zinc-900/50 border border-zinc-800 rounded-lg text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition"
                 disabled={loading || authLoading}
               />
             </div>
@@ -104,7 +103,7 @@ export default function LoginPage() {
                 type="password"
                 {...register("password")}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 bg-zinc-900/50 border border-zinc-800 rounded-lg text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition"
+                className="w-full pl-10 pr-4 py-2.5 bg-zinc-900/50 border border-zinc-800 rounded-lg text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 transition"
                 disabled={loading || authLoading}
               />
             </div>
@@ -116,7 +115,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading || authLoading}
-            className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-medium text-sm transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-purple-600/20 disabled:opacity-50"
+            className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 text-white rounded-lg font-medium text-sm transition flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-orange-600/20 disabled:opacity-50"
           >
             {loading || authLoading ? (
               <>
@@ -128,7 +127,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Quick Testing logins */}
+        {}
         <div className="mt-8 pt-6 border-t border-zinc-900">
           <p className="text-xs font-medium text-zinc-500 text-center mb-4 uppercase tracking-wider">
             Быстрый вход для тестирования

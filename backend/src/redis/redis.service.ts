@@ -26,7 +26,6 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
       this.logger.log('Redis connected successfully!');
     });
 
-    // Connect asynchronously to avoid blocking NestJS startup if Redis is down
     this.client.connect().catch((err) => {
       this.logger.error(`Failed to connect to Redis: ${err.message}`);
     });

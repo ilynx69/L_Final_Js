@@ -18,7 +18,6 @@ export default function TeacherLabsPage() {
         const assignmentsData = await ApiClient.labs.getAssignments("subj-web");
         setLabs(assignmentsData);
 
-        // Fetch all submissions to count pendings
         const subsData = MockDatabase.getSubmissions();
         setSubmissions(subsData);
       } catch (err) {
@@ -46,7 +45,7 @@ export default function TeacherLabsPage() {
 
       {loading ? (
         <div className="flex h-64 items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -57,11 +56,11 @@ export default function TeacherLabsPage() {
               <div key={lab.id} className="glass p-6 rounded-xl border border-zinc-800 flex flex-col justify-between gap-6 relative overflow-hidden group">
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-purple-400">
+                    <div className="h-9 w-9 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-orange-400">
                       <FileText className="h-5 w-5" />
                     </div>
                     <div>
-                      <span className="text-[9px] font-semibold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20 uppercase tracking-wider">
+                      <span className="text-[9px] font-semibold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20 uppercase tracking-wider">
                         {lab.isTeam ? "Командная" : "Индивидуальная"}
                       </span>
                       <h3 className="text-sm font-bold text-white leading-tight mt-1 truncate max-w-[200px]">
@@ -88,7 +87,7 @@ export default function TeacherLabsPage() {
 
                 <Link
                   href={`/teacher/labs/${lab.id}`}
-                  className="flex items-center justify-center gap-1.5 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
                 >
                   <ClipboardCheck className="h-4 w-4" />
                   Перейти к проверке <ArrowRight className="h-3 w-3" />

@@ -35,12 +35,11 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id, role: user.role };
     const token = this.jwtService.sign(payload);
 
-    // Write to HttpOnly Cookie
     res.cookie('access_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     return {

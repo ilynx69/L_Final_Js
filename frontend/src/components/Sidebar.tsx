@@ -12,8 +12,7 @@ export default function Sidebar() {
   const { theme, toggleTheme } = useTheme();
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  
-  // Settings Form State
+
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -53,7 +52,7 @@ export default function Sidebar() {
       <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r border-zinc-200 dark:border-zinc-900 bg-white/80 dark:bg-[#09090b]/80 backdrop-blur-md flex flex-col justify-between p-4 transition-colors">
         <div className="flex flex-col gap-8">
           <div className="flex items-center gap-3 px-2 py-3">
-            <div className="h-9 w-9 rounded-lg bg-purple-600 flex items-center justify-center text-white shadow-lg shadow-purple-600/30">
+            <div className="h-9 w-9 rounded-lg bg-orange-600 flex items-center justify-center text-white shadow-lg shadow-orange-600/30">
               <GraduationCap className="h-5 w-5" />
             </div>
             <div>
@@ -76,11 +75,11 @@ export default function Sidebar() {
                   href={link.href}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition cursor-pointer ${
                     isActive
-                      ? "bg-purple-600/10 text-purple-600 dark:text-purple-400 border border-purple-600/20"
+                      ? "bg-orange-600/10 text-orange-600 dark:text-orange-400 border border-orange-600/20"
                       : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-900/50 border border-transparent"
                   }`}
                 >
-                  <Icon className={`h-4.5 w-4.5 ${isActive ? "text-purple-600 dark:text-purple-400" : "text-zinc-400 dark:text-zinc-500"}`} />
+                  <Icon className={`h-4.5 w-4.5 ${isActive ? "text-orange-600 dark:text-orange-400" : "text-zinc-400 dark:text-zinc-500"}`} />
                   {link.name}
                 </Link>
               );
@@ -90,7 +89,7 @@ export default function Sidebar() {
 
         <div className="flex flex-col gap-4 border-t border-zinc-200 dark:border-zinc-900 pt-4">
           <div className="flex items-center gap-3 px-2 py-1">
-            <div className="h-9 w-9 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-xs font-semibold text-purple-600 dark:text-purple-400">
+            <div className="h-9 w-9 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-xs font-semibold text-orange-600 dark:text-orange-400">
               {user.lastName[0]}{user.firstName[0]}
             </div>
             <div className="flex flex-col overflow-hidden">
@@ -122,18 +121,18 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Settings Modal Dialog (Russian) */}
+      {}
       {isSettingsOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="w-full max-w-lg bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-900 p-6 rounded-2xl shadow-2xl relative space-y-6">
-            
-            {/* Header */}
+
+            {}
             <div className="flex justify-between items-start pb-4 border-b border-zinc-100 dark:border-zinc-900">
-              <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400">
+              <div className="flex items-center gap-2 text-orange-600 dark:text-orange-400">
                 <Settings className="h-5 w-5" />
                 <h2 className="text-base font-bold text-zinc-900 dark:text-white">Настройки профиля</h2>
               </div>
-              <button 
+              <button
                 onClick={() => setIsSettingsOpen(false)}
                 className="h-8 w-8 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-900 flex items-center justify-center text-zinc-500 hover:text-zinc-950 dark:hover:text-white cursor-pointer transition"
               >
@@ -141,7 +140,7 @@ export default function Sidebar() {
               </button>
             </div>
 
-            {/* Profile Info */}
+            {}
             <div className="grid grid-cols-2 gap-4 bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-100 dark:border-zinc-900 p-4 rounded-xl text-xs">
               <div className="space-y-1">
                 <span className="text-zinc-400 block">Пользователь</span>
@@ -153,7 +152,7 @@ export default function Sidebar() {
               </div>
               <div className="space-y-1 mt-2">
                 <span className="text-zinc-400 block">Роль</span>
-                <span className="font-semibold text-purple-600 dark:text-purple-400 uppercase">{isTeacher ? "Преподаватель" : "Студент"}</span>
+                <span className="font-semibold text-orange-600 dark:text-orange-400 uppercase">{isTeacher ? "Преподаватель" : "Студент"}</span>
               </div>
               <div className="space-y-1 mt-2">
                 <span className="text-zinc-400 block">Статус</span>
@@ -161,24 +160,24 @@ export default function Sidebar() {
               </div>
             </div>
 
-            {/* Theme Toggle option */}
+            {}
             <div className="flex items-center justify-between p-4 bg-zinc-50 dark:bg-zinc-900/30 border border-zinc-100 dark:border-zinc-900 rounded-xl">
               <div className="flex items-center gap-2">
-                {theme === "dark" ? <Moon className="h-4.5 w-4.5 text-purple-400" /> : <Sun className="h-4.5 w-4.5 text-yellow-500" />}
+                {theme === "dark" ? <Moon className="h-4.5 w-4.5 text-orange-400" /> : <Sun className="h-4.5 w-4.5 text-yellow-500" />}
                 <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">Тема оформления</span>
               </div>
               <button
                 onClick={toggleTheme}
-                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
+                className="px-3 py-1.5 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-xs font-semibold transition cursor-pointer"
               >
                 {theme === "dark" ? "Переключить на Светлую" : "Переключить на Темную"}
               </button>
             </div>
 
-            {/* Change Password Form */}
+            {}
             <form onSubmit={handleSavePassword} className="space-y-4">
               <h3 className="text-xs font-bold text-zinc-900 dark:text-white flex items-center gap-1.5 uppercase tracking-wider">
-                <Lock className="h-3.5 w-3.5 text-purple-500" /> Смена пароля
+                <Lock className="h-3.5 w-3.5 text-orange-500" /> Смена пароля
               </h3>
               <div className="grid grid-cols-3 gap-3">
                 <input
@@ -187,7 +186,7 @@ export default function Sidebar() {
                   value={oldPassword}
                   onChange={(e) => setOldPassword(e.target.value)}
                   required
-                  className="px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+                  className="px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500"
                 />
                 <input
                   type="password"
@@ -195,7 +194,7 @@ export default function Sidebar() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
-                  className="px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+                  className="px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500"
                 />
                 <input
                   type="password"
@@ -203,11 +202,11 @@ export default function Sidebar() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+                  className="px-3 py-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500"
                 />
               </div>
-              
-              {/* Actions */}
+
+              {}
               <div className="flex gap-3 pt-2">
                 <button
                   type="button"
@@ -218,7 +217,7 @@ export default function Sidebar() {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-semibold text-xs transition cursor-pointer shadow-lg shadow-purple-600/20"
+                  className="flex-1 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-lg font-semibold text-xs transition cursor-pointer shadow-lg shadow-orange-600/20"
                 >
                   Сохранить
                 </button>

@@ -19,7 +19,7 @@ export const ApiClient = {
         const users = MockDatabase.getUsers();
         const user = users.find((u) => u.email === email);
         if (!user) throw new Error("Пользователь не найден");
-        
+
         if (typeof window !== "undefined") {
           localStorage.setItem("mock_session", JSON.stringify(user));
         }
@@ -72,6 +72,22 @@ export const ApiClient = {
   },
 
   journal: {
+    getGroups: async (): Promise<{ id: string; name: string }[]> => {
+      if (USE_MOCK) {
+        return [{ id: "group-1", name: "ИП-41" }, { id: "group-2", name: "ИП-42" }];
+      }
+      const res = await api.get("/journal/groups");
+      return res.data;
+    },
+
+    getSubjects: async (): Promise<{ id: string; name: string }[]> => {
+      if (USE_MOCK) {
+        return [{ id: "subj-web", name: "Веб-технологии" }, { id: "subj-arch", name: "Архитектура систем" }];
+      }
+      const res = await api.get("/journal/subjects");
+      return res.data;
+    },
+
     getMatrix: async (groupId: string, subjectId: string): Promise<JournalMatrixResponse> => {
       if (USE_MOCK) {
         await delay(500);
@@ -146,10 +162,35 @@ export const ApiClient = {
         const lesson = lessons.find((l) => l.id === payload.lessonId);
 
         let finalMarkType = payload.markType;
+        let finalValue = payload.value ?? null;
 
-        if (lesson && payload.markType === "PRESENCE") {
-          const lessonStart = new Date(lesson.startTime);
-          const isLate = false;
+        if (finalMarkType === "DELAY") {
+          if (finalValue !== null) {
+            if (finalValue > 20) {
+              finalMarkType = "ABSENCE";
+              finalValue = null;
+            } else if (finalValue < 1) {
+              finalValue = 1;
+            }
+          } else {
+            finalValue = 10;
+          }
+        } else if (finalMarkType === "PRESENCE") {
+          if (lesson) {
+            const now = new Date();
+            const lessonStart = new Date(lesson.startTime);
+            const diffMs = now.getTime() - lessonStart.getTime();
+            if (diffMs > 0) {
+              const diffMinutes = Math.floor(diffMs / 60000);
+              if (diffMinutes > 20) {
+                finalMarkType = "ABSENCE";
+                finalValue = null;
+              } else if (diffMinutes >= 1) {
+                finalMarkType = "DELAY";
+                finalValue = diffMinutes;
+              }
+            }
+          }
         }
 
         if (!cells[payload.studentId]) {
@@ -160,7 +201,7 @@ export const ApiClient = {
 
         const updatedCell = {
           id: gradeId,
-          value: payload.value ?? null,
+          value: finalValue,
           markType: finalMarkType,
           type: payload.type,
           comment: payload.comment || null
@@ -252,7 +293,7 @@ export const ApiClient = {
         await delay(400);
         const subs = MockDatabase.getSubmissions();
         const users = MockDatabase.getUsers();
-        
+
         return subs
           .filter((s) => s.labAssignmentId === labAssignmentId)
           .map((s) => {

@@ -35,7 +35,7 @@ export class LessonsService {
       comment?: string;
     },
   ) {
-    // 1. Validate student and status
+
     const student = await this.prisma.user.findUnique({
       where: { id: data.studentId },
     });
@@ -46,7 +46,6 @@ export class LessonsService {
       throw new BadRequestException('Невозможно выставить оценку отчисленному студенту');
     }
 
-    // 2. Fetch lesson to check timing
     const lesson = await this.prisma.lesson.findUnique({
       where: { id: data.lessonId },
     });
@@ -54,18 +53,36 @@ export class LessonsService {
       throw new BadRequestException('Урок не найден');
     }
 
-    // 3. Automatic delay detection (if server time is 15+ minutes past lesson start and markType is PRESENCE)
     let finalMarkType = data.markType;
-    if (finalMarkType === MarkType.PRESENCE) {
+    let finalValue = data.value;
+
+    if (finalMarkType === MarkType.DELAY) {
+      if (finalValue !== null && finalValue !== undefined) {
+        if (finalValue > 20) {
+          finalMarkType = MarkType.ABSENCE;
+          finalValue = null;
+        } else if (finalValue < 1) {
+          finalValue = 1;
+        }
+      } else {
+        finalValue = 10;
+      }
+    } else if (finalMarkType === MarkType.PRESENCE) {
       const now = new Date();
-      const fifteenMinutes = 15 * 60 * 1000;
       const lessonStart = new Date(lesson.startTime);
-      if (now.getTime() > lessonStart.getTime() + fifteenMinutes) {
-        finalMarkType = MarkType.DELAY;
+      const diffMs = now.getTime() - lessonStart.getTime();
+      if (diffMs > 0) {
+        const diffMinutes = Math.floor(diffMs / 60000);
+        if (diffMinutes > 20) {
+          finalMarkType = MarkType.ABSENCE;
+          finalValue = null;
+        } else if (diffMinutes >= 1) {
+          finalMarkType = MarkType.DELAY;
+          finalValue = diffMinutes;
+        }
       }
     }
 
-    // 4. Create or update grade
     return this.prisma.grade.upsert({
       where: {
         studentId_lessonId: {
@@ -74,7 +91,7 @@ export class LessonsService {
         },
       },
       update: {
-        value: data.value,
+        value: finalValue,
         markType: finalMarkType,
         type: data.type,
         comment: data.comment,
@@ -83,7 +100,7 @@ export class LessonsService {
       create: {
         studentId: data.studentId,
         lessonId: data.lessonId,
-        value: data.value,
+        value: finalValue,
         markType: finalMarkType,
         type: data.type,
         comment: data.comment,

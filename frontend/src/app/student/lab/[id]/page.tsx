@@ -15,8 +15,7 @@ export default function StudentLabSubmissionPage() {
   const [submission, setSubmission] = useState<LabSubmission | null>(null);
   const [students, setStudents] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  // Form State
+
   const [selectedPartnerId, setSelectedPartnerId] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState<boolean>(false);
@@ -25,16 +24,14 @@ export default function StudentLabSubmissionPage() {
   useEffect(() => {
     async function loadData() {
       try {
-        // Load lab details
+
         const labData = await ApiClient.labs.getAssignmentById(labId as string);
         setLab(labData);
 
-        // Load students in group (for team selection)
         const allUsers = MockDatabase.getUsers();
         const studentUsers = allUsers.filter(u => u.role === "STUDENT" && u.id !== "student-1" && u.status === "ACTIVE");
         setStudents(studentUsers);
 
-        // Check if there is an existing submission
         const allSubs = await ApiClient.labs.getSubmissions(labId as string);
         const existingSub = allSubs.find(s => s.studentId === "student-1" || s.teamId === "team-1");
         if (existingSub) {
@@ -49,7 +46,6 @@ export default function StudentLabSubmissionPage() {
     loadData();
   }, [labId]);
 
-  // Drag & Drop handlers
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -81,13 +77,13 @@ export default function StudentLabSubmissionPage() {
 
     setSubmitting(true);
     try {
-      // Simulate file upload to S3 and save submission
+
       const mockFileUrl = `https://minio.mock-s3.local/labs/${selectedFile.name.toLowerCase().replace(/\s+/g, "_")}`;
-      
+
       const payload = {
         labAssignmentId: labId as string,
         studentId: lab?.isTeam ? null : "student-1",
-        teamId: lab?.isTeam ? "team-1" : null, // Simulate being in team-1
+        teamId: lab?.isTeam ? "team-1" : null,
         fileUrl: mockFileUrl
       };
 
@@ -105,7 +101,7 @@ export default function StudentLabSubmissionPage() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
       </div>
     );
   }
@@ -126,20 +122,20 @@ export default function StudentLabSubmissionPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header link */}
-      <Link 
-        href={`/student/subject/${lab.subjectId}`} 
+      {}
+      <Link
+        href={`/student/subject/${lab.subjectId}`}
         className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-white transition"
       >
         <ArrowLeft className="h-4 w-4" /> Вернуться к предмету
       </Link>
 
       <div className="grid md:grid-cols-3 gap-6">
-        {/* Left Side: Lab Details */}
+        {}
         <div className="md:col-span-2 space-y-6">
           <div className="glass p-6 rounded-xl border border-zinc-800 space-y-4">
             <div>
-              <span className="text-[10px] font-semibold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded border border-purple-500/20 uppercase tracking-wider">
+              <span className="text-[10px] font-semibold text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded border border-orange-500/20 uppercase tracking-wider">
                 {lab.subjectName}
               </span>
               <h1 className="text-xl font-bold text-white mt-2 leading-snug">{lab.title}</h1>
@@ -161,9 +157,9 @@ export default function StudentLabSubmissionPage() {
             </div>
 
             {lab.fileUrl && (
-              <a 
-                href={lab.fileUrl} 
-                className="flex items-center gap-2 p-3 bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-semibold text-purple-400 transition"
+              <a
+                href={lab.fileUrl}
+                className="flex items-center gap-2 p-3 bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-semibold text-orange-400 transition"
               >
                 <Paperclip className="h-4 w-4" />
                 Скачать техническое задание (ТЗ)
@@ -171,12 +167,12 @@ export default function StudentLabSubmissionPage() {
             )}
           </div>
 
-          {/* Form to submit lab */}
+          {}
           {!submission ? (
             <form onSubmit={handleSubmit} className="glass p-6 rounded-xl border border-zinc-800 space-y-6">
               <h2 className="text-sm font-bold text-white">Отправка решения</h2>
 
-              {/* Team selection */}
+              {}
               {lab.isTeam && (
                 <div className="space-y-2">
                   <label className="flex items-center gap-1.5 text-xs font-medium text-zinc-400">
@@ -186,7 +182,7 @@ export default function StudentLabSubmissionPage() {
                     value={selectedPartnerId}
                     onChange={(e) => setSelectedPartnerId(e.target.value)}
                     required
-                    className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-white focus:outline-none focus:border-purple-500"
+                    className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-white focus:outline-none focus:border-orange-500"
                   >
                     <option value="">-- Выбрать из списка группы --</option>
                     {students.map((student) => (
@@ -201,28 +197,28 @@ export default function StudentLabSubmissionPage() {
                 </div>
               )}
 
-              {/* File Upload drag and drop */}
-              <div 
+              {}
+              <div
                 className={`relative border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center gap-3 transition ${
-                  dragActive ? "border-purple-500 bg-purple-500/5" : "border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900/40"
+                  dragActive ? "border-orange-500 bg-orange-500/5" : "border-zinc-800 bg-zinc-900/20 hover:bg-zinc-900/40"
                 }`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
               >
-                <input 
-                  type="file" 
-                  id="file-upload" 
+                <input
+                  type="file"
+                  id="file-upload"
                   onChange={handleFileChange}
                   required
-                  className="hidden" 
+                  className="hidden"
                 />
-                
+
                 <UploadCloud className="h-10 w-10 text-zinc-500" />
-                
+
                 <div className="text-center">
-                  <label htmlFor="file-upload" className="text-xs font-bold text-purple-400 hover:text-purple-300 cursor-pointer transition">
+                  <label htmlFor="file-upload" className="text-xs font-bold text-orange-400 hover:text-orange-300 cursor-pointer transition">
                     Загрузить файл
                   </label>
                   <span className="text-xs text-zinc-500"> или перетащите его сюда</span>
@@ -231,7 +227,7 @@ export default function StudentLabSubmissionPage() {
 
                 {selectedFile && (
                   <div className="flex items-center gap-2 mt-4 px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-white">
-                    <FileText className="h-4 w-4 text-purple-400" />
+                    <FileText className="h-4 w-4 text-orange-400" />
                     <span>{selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)</span>
                   </div>
                 )}
@@ -240,7 +236,7 @@ export default function StudentLabSubmissionPage() {
               <button
                 type="submit"
                 disabled={!selectedFile || submitting}
-                className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg font-medium text-xs transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-2.5 bg-orange-600 hover:bg-orange-500 text-white rounded-lg font-medium text-xs transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {submitting ? (
                   <>
@@ -252,12 +248,12 @@ export default function StudentLabSubmissionPage() {
               </button>
             </form>
           ) : (
-            /* Submission Status / Details */
+
             <div className="glass p-6 rounded-xl border border-zinc-800 space-y-6">
               <div className="flex justify-between items-center pb-4 border-b border-zinc-900">
                 <h2 className="text-sm font-bold text-white">Ваше решение отправлено</h2>
-                
-                {/* Status Badges */}
+
+                {}
                 {submission.status === "PENDING" ? (
                   <span className="text-xs font-semibold text-yellow-400 bg-yellow-500/10 px-2.5 py-1 rounded-lg border border-yellow-500/20">
                     На проверке
@@ -276,7 +272,7 @@ export default function StudentLabSubmissionPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-zinc-500 font-medium">Отправленный файл:</span>
-                  <a href={submission.fileUrl} className="text-purple-400 hover:text-purple-300 font-semibold truncate max-w-xs flex items-center gap-1">
+                  <a href={submission.fileUrl} className="text-orange-400 hover:text-orange-300 font-semibold truncate max-w-xs flex items-center gap-1">
                     <Paperclip className="h-3.5 w-3.5" /> Решение.zip
                   </a>
                 </div>
@@ -289,12 +285,12 @@ export default function StudentLabSubmissionPage() {
                 {submission.teamName && (
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-zinc-500 font-medium">Сдано командой:</span>
-                    <span className="text-purple-400 font-bold">{submission.teamName}</span>
+                    <span className="text-orange-400 font-bold">{submission.teamName}</span>
                   </div>
                 )}
               </div>
 
-              {/* Teacher comments feedback */}
+              {}
               {(submission.teacherComment || submission.status === "GRADED") && (
                 <div className="p-4 bg-zinc-900/60 border border-zinc-800 rounded-xl space-y-2">
                   <p className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Отзыв преподавателя</p>
@@ -309,21 +305,21 @@ export default function StudentLabSubmissionPage() {
           )}
         </div>
 
-        {/* Right Side: Lab Instructions/Requirements */}
+        {}
         <div className="space-y-6">
           <div className="glass p-5 rounded-xl border border-zinc-800 space-y-4">
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">Критерии оценки</h3>
             <ul className="space-y-2.5 text-xs text-zinc-400 font-medium">
               <li className="flex items-start gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-500 mt-1.5 shrink-0" />
                 <span>Верстка соответствует макету (Figma) — до 2 баллов</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-500 mt-1.5 shrink-0" />
                 <span>Адаптивность (мобильные и планшеты) — до 2 баллов</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-purple-500 mt-1.5 shrink-0" />
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-500 mt-1.5 shrink-0" />
                 <span>Валидность кода и семантика HTML5 — 1 балл</span>
               </li>
             </ul>

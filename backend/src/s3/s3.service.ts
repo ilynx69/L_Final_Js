@@ -24,10 +24,9 @@ export class S3Service implements OnModuleInit {
         accessKeyId,
         secretAccessKey,
       },
-      forcePathStyle: true, // Required for MinIO
+      forcePathStyle: true,
     });
 
-    // Try to ensure bucket exists
     this.ensureBucketExists().catch((err) => {
       this.logger.warn(`Could not ensure S3 bucket exists: ${err.message}`);
     });
@@ -68,8 +67,6 @@ export class S3Service implements OnModuleInit {
       }),
     );
 
-    // Return the URL to access the file
-    // e.g. http://localhost:9000/gradebook-files/labs/123-456.pdf
     return `${this.endpoint}/${this.bucketName}/${key}`;
   }
 }
