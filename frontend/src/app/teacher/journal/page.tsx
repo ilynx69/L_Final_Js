@@ -478,10 +478,10 @@ export default function TeacherJournalPage() {
                           data-row={rowIdx}
                           data-col={colIdx}
                           onFocus={() => handleCellFocus(studentRow.id, lesson.id)}
-                          
-                          
-                          
-                          
+                          onKeyDown={(e) => handleKeyDown(e, studentRow.id, lesson.id, rowIdx, colIdx, isExpelled)}
+                          onContextMenu={(e) => handleRightClick(e, studentRow.id, lesson.id, isExpelled)}
+                          onMouseDown={(e) => handleMiddleClick(e, studentRow.id, lesson.id, isExpelled)}
+                          onDoubleClick={() => handleDoubleClick(studentRow.id, lesson.id, studentRow, lesson)}
                           className={`p-4 text-xs text-center border-l border-zinc-900/60 cursor-pointer select-none focus:outline-none focus:bg-orange-600/10 focus:ring-1 focus:ring-orange-500/50 relative ${cellClass} ${isExpelled ? "pointer-events-none" : ""}`}
                           title={cell?.comment ? `[${cell.type}]: ${cell.comment}` : undefined}
                         >
