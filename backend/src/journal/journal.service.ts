@@ -10,7 +10,6 @@ export class JournalService {
       throw new BadRequestException('Параметры groupId и subjectId обязательны');
     }
 
-    // 1. Fetch lessons
     const lessons = await this.prisma.lesson.findMany({
       where: {
         groupId,
@@ -21,7 +20,6 @@ export class JournalService {
       },
     });
 
-    // 2. Fetch students belonging to the group
     const userToGroups = await this.prisma.userToGroup.findMany({
       where: {
         groupId,
@@ -46,7 +44,6 @@ export class JournalService {
       .map((utg) => utg.user)
       .filter((user) => user.role === 'STUDENT');
 
-    // 3. Format lessons list
     const formattedLessons = lessons.map((lesson) => ({
       id: lesson.id,
       date: lesson.date.toISOString().split('T')[0],
@@ -54,7 +51,6 @@ export class JournalService {
       endTime: lesson.endTime.toISOString(),
     }));
 
-    // 4. Format students and map their grades
     const formattedStudents = studentsList.map((student) => {
       const gradesMap: Record<string, any> = {};
 
@@ -68,10 +64,9 @@ export class JournalService {
         };
       });
 
-      // Ensure that every lesson has a value (even if null/empty) to prevent client crashes
       lessons.forEach((lesson) => {
         if (!gradesMap[lesson.id]) {
-          gradesMap[lesson.id] = null; // or empty structure
+          gradesMap[lesson.id] = null;
         }
       });
 
@@ -94,5 +89,29 @@ export class JournalService {
       lessons: formattedLessons,
       students: formattedStudents,
     };
+  }
+
+  async getGroups() {
+    return this.prisma.group.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+  }
+
+  async getSubjects() {
+    return this.prisma.subject.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
   }
 }

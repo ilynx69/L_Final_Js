@@ -22,4 +22,18 @@ export class JournalController {
   ) {
     return this.journalService.getJournal(groupId, subjectId);
   }
+
+  @Get('groups')
+  @ApiOperation({ summary: 'Get all groups' })
+  @ApiResponse({ status: 200, description: 'List of groups' })
+  async getGroups() {
+    return this.journalService.getGroups();
+  }
+
+  @Get('subjects')
+  @ApiOperation({ summary: 'Get all subjects' })
+  @ApiResponse({ status: 200, description: 'List of subjects' })
+  async getSubjects() {
+    return this.journalService.getSubjects();
+  }
 }
